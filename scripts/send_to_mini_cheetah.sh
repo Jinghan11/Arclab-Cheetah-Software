@@ -14,6 +14,7 @@ cp ../scripts/run_mc* ./robot-software/build
 cp ../scripts/setup_network_mc.py ./robot-software/build
 cp ../scripts/run_mc_debug.sh ./robot-software/build
 cp ../scripts/config_network_lcm.sh ./robot-software
+cp ../mc-build/user/JPos_Controller/jpos_ctrl ./robot-software/build
 cp -r ../robot robot-software
 cp -r ../config robot-software
 
