@@ -266,7 +266,7 @@ void MiniCheetahHardwareBridge::run() {
 
     if(_userControlParameters) {
       try {
-        _userControlParameters->initializeFromYamlFile(THIS_COM "config/mc-mit-ctrl-user-parameters.yaml");
+        _userControlParameters->initializeFromYamlFile(THIS_COM "config/Jpos-ctrl-user-parameters.yaml");
       } catch(std::exception& e) {
         printf("Failed to initialize user parameters from yaml file: %s\n", e.what());
         exit(1);

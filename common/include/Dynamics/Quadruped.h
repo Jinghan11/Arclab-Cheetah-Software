@@ -24,7 +24,7 @@
  */
 namespace cheetah {
 constexpr size_t num_act_joint = 12;
-constexpr size_t num_q = 19;
+constexpr size_t num_q = 19;          //??
 constexpr size_t dim_config = 18;
 constexpr size_t num_leg = 4;
 constexpr size_t num_leg_joint = 3;

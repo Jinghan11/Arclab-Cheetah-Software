@@ -1,10 +1,8 @@
 #include "JPos_Controller.hpp"
 
 
-
-
 void JPos_Controller::runController(){
-  
+
   Mat3<float> kpMat;
   Mat3<float> kdMat;
   //kpMat << 20, 0, 0, 0, 20, 0, 0, 0, 20;
@@ -14,7 +12,7 @@ void JPos_Controller::runController(){
 
   static int iter(0);
   ++iter;
- 
+
 
   //Reading current joint position
   if(iter < 10){
@@ -27,9 +25,7 @@ void JPos_Controller::runController(){
 
   _legController->_maxTorque = 2;
   _legController->_legsEnabled = true;
-
-  #ifdef JPOS_JointTest
-  //Every joint is controled by sin function
+  /* Every joint is controled by sin function
   if(userParameters.calibrate > 0.4) {
     _legController->_calibrateEncoders = userParameters.calibrate;
   } else {
@@ -50,7 +46,7 @@ void JPos_Controller::runController(){
       }
     }
   }
-  #endif
+  */
 
   /*
   if(iter%200 ==0){
@@ -61,21 +57,4 @@ void JPos_Controller::runController(){
   printf("leg 3: qDes of Ab is %f\n", _legController->commands[3].qDes[0]);
   }
   */
-
-#ifdef JPOS_Tracking
-    QuadrupedInverseKinematic *p=new QuadrupedInverseKinematic;
-
-    p->calc_dyz();
-    p->calc_lyz();
-    p->calc_L_gamma();
-    p->calc_R_gamma();
-    p->calc_lxz();
-    p->calc_n();
-    p->calc_beta();
-    p->calc_alpha();
-
-    delete p;
-    //p = nullptr;
-    //system("pause");
-#endif
 }

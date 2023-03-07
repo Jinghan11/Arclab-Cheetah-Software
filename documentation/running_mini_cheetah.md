@@ -15,7 +15,9 @@ To build code which can run on the mini cheetah. After your first make, you can 
 - `cmake -DMINI_CHEETAH_BUILD=TRUE ..`
 - `make -j8`
   
+Using Jpos controller, you should add a new config file that allow `Jpostroller` read the control parameter like kd, kp, etc. The file path are also need to edit in `HardBridge.cpp`.
 
+The speed of SPI may also need to edit depending on you own robot.
 
 To copy the code to the robot, you need to set your controller path IP address in `../scripts/send_to_mini_cheetah.sh`. Then, you can run it and check the file in your computer via SSH.
 

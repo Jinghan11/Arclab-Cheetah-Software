@@ -30,6 +30,10 @@ The robot folder will contain the robot program
 The sim folder will contain the simulation program. It is the only program which depends on QT.
 The third-party will contain *small* third party libraries that we have modified. This should just be libsoem for Cheetah 3, which Pat modified at one point.
 
+## Basic definetion
+In `Quadruped.h`, a data structure containing parameters for quadruped robot is defined. This file contains the Quadruped class.  This stores all the parameters for a quadruped robot.  There are utility functions to generate Quadruped objects for Cheetah 3 (and eventually mini-cheetah). There is a buildModel() method which can be used to create a floating-base dynamics model of the quadruped.
+
+
 ## Build
 To build all code:
 ```
