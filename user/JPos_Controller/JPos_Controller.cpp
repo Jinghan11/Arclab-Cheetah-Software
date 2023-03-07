@@ -64,18 +64,87 @@ void JPos_Controller::runController(){
 
 #ifdef JPOS_Tracking
     QuadrupedInverseKinematic *p=new QuadrupedInverseKinematic;
+    vector<double> x; // 存储 x 坐标
+    vector<double> z; // 存储 z 坐标
+    double x_t = 0;
+    double z_t = 0;
+    double x_last = 0;
+    double z_last = 0;
+    double t_last = 0;
+    double gamma = 0;
+    double beta = 0;
+    double alpha = 0;
 
-    p->calc_dyz();
-    p->calc_lyz();
-    p->calc_L_gamma();
-    p->calc_R_gamma();
-    p->calc_lxz();
-    p->calc_n();
-    p->calc_beta();
-    p->calc_alpha();
+    p->set_leg_length(userParameters.h, userParameters.hu, userParameters.hl);
 
+    for (double t = 0; t <= userParameters.time; t += 0.01)
+    {
+        if (t >= 0 && t <= userParameters.lamda * userParameters.time)
+        {
+            double sigma = 2 * M_PI * t / (userParameters.lamda * userParameters.time);
+            x_t = (userParameters.x_end - userParameters.x_start) * ((sigma - sin(sigma)) / (2 * M_PI)) + userParameters.x_start;
+            z_t = userParameters.z_height * (1 - cos(sigma)) / 2 + userParameters.z_start;
+            p->set_toe_position(x_t,-0.08,z_t);
+            p->calc_dyz();
+            p->calc_lyz();
+            p->calc_L_gamma();
+            p->calc_R_gamma();
+            p->calc_lxz();
+            p->calc_n();
+            beta  = p->calc_beta();
+            alpha = p->calc_alpha();
+            for(int leg(0); leg<4; ++leg){
+              for(int jidx(0); jidx<3; ++jidx){
+                _legController->commands[leg].qDes[0] = gamma;
+                _legController->commands[leg].qDes[1] = beta;
+                _legController->commands[leg].qDes[2] = alpha;
+                _legController->commands[leg].qdDes[jidx] = 0.;
+                _legController->commands[leg].tauFeedForward[jidx] = userParameters.tau_ff;
+            }
+              _legController->commands[leg].kpJoint = kpMat;
+              _legController->commands[leg].kdJoint = kdMat;
+            }
+            //printf("[Jpos] beta is %f\n", beta);     
+            //printf("[Jpos] alpha is %f\n", alpha);       
+        }
+        else if (t > userParameters.lamda * userParameters.time && t < userParameters.time)
+        {
+            x_t = x_last - (x_last - userParameters.x_start) / ((userParameters.time - t) / (t - t_last));
+            z_t = z_last;
+            p->set_toe_position(x_t,-0.08,z_t);
+            p->calc_dyz();
+            p->calc_lyz();
+            p->calc_L_gamma();
+            p->calc_R_gamma();
+            p->calc_lxz();
+            p->calc_n();
+            beta  = p->calc_beta();
+            alpha = p->calc_alpha();
+            for(int leg(0); leg<4; ++leg){
+              for(int jidx(0); jidx<3; ++jidx){
+                _legController->commands[leg].qDes[0] = gamma;
+                _legController->commands[leg].qDes[1] = beta;
+                _legController->commands[leg].qDes[2] = alpha;
+                _legController->commands[leg].qdDes[jidx] = 0.;
+                _legController->commands[leg].tauFeedForward[jidx] = userParameters.tau_ff;
+            }
+              _legController->commands[leg].kpJoint = kpMat;
+              _legController->commands[leg].kdJoint = kdMat;
+            }   
+            //printf("[Jpos] beta is %f\n", beta);     
+            //printf("[Jpos] alpha is %f\n", alpha);        
+        }
+        x_last = x_t;
+        z_last = z_t;
+        t_last = t;
+    }
+    for(int leg(0); leg<4; ++leg){
+        _legController->commands[leg].qDes[0] = gamma;
+        _legController->commands[leg].qDes[1] = beta;
+        _legController->commands[leg].qDes[2] = alpha;
+    }
     delete p;
-    //p = nullptr;
+    p = nullptr;
     //system("pause");
 #endif
 }

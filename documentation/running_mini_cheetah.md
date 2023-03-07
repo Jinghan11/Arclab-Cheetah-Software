@@ -15,7 +15,7 @@ To build code which can run on the mini cheetah. After your first make, you can 
 - `cmake -DMINI_CHEETAH_BUILD=TRUE ..`
 - `make -j8`
   
-Using Jpos controller, you should add a new config file that allow `Jpostroller` read the control parameter like kd, kp, etc. The file path are also need to edit in `HardBridge.cpp`.
+Using Jpos controller, you should add a new config file that allow `Jpostroller` read the control parameter like kd, kp, etc. The file path are also need to edit in `HardBridge.cpp`. Attention: Using the tab key instead of the spacebar to add spaces will prevent the program from reading the parameters. 
 
 The speed of SPI may also need to edit depending on you own robot.
 
@@ -27,7 +27,7 @@ If you would like to open LCM spy, you can do this by running `../script/launch_
 On the mini cheetah, you will find a folder in the home directory name `robot-software` and the date.  
 
 To run the robot code, enter the build folder and run 
-- `./run_mc.sh jpos_ctrl`
+- `./run_mc.sh ./jpos_ctrl`
   
 Remind that the NIC name and multicast address should be changed firstly.
 

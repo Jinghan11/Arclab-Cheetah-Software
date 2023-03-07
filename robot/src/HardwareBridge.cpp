@@ -431,9 +431,9 @@ void MiniCheetahHardwareBridge::runSpi() {
   //check the message send/receive from spine
   //printf("[RT SPI] SPI data q_hip is %f\n", data->q_hip[1]); 
   //printf("[RT SPI] SPI command q_des_hip is %f\n",cmd->q_des_hip[1]);
-  //pretty_print(cmd->q_des_abad, "q des abad", 4);
-  //pretty_print(cmd->q_des_hip, "q des hip", 4);
-  //pretty_print(cmd->q_des_knee, "q des knee", 4);
+  pretty_print(cmd->q_des_abad, "q des abad", 4);
+  pretty_print(cmd->q_des_hip, "q des hip", 4);
+  pretty_print(cmd->q_des_knee, "q des knee", 4);
   memcpy(&_spiData, data, sizeof(spi_data_t));
 
   _spiLcm.publish("spi_data", data);

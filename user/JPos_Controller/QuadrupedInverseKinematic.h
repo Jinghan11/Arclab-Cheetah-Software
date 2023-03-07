@@ -20,11 +20,13 @@ class QuadrupedInverseKinematic
         double calc_n();
         float calc_beta();
         float calc_alpha();
+        void set_toe_position(double x,double y, double z);
+        void set_leg_length(float len1,float len2, float len3);
     private:
         //given         
-        float pos_x;//The position of the toe - X axis
-        float pos_y;//The position of the toe - Y axis
-        float pos_z;//The position of the toe - Z axis
+        double pos_x;//The position of the toe - X axis
+        double pos_y;//The position of the toe - Y axis
+        double pos_z;//The position of the toe - Z axis
         float h;//The length of the first link
         float hu;//The length of the second link
         float hl;//The length of the third link

@@ -1,20 +1,21 @@
 # Generated on Mon Aug  5 18:20:08 2019
 __collection-name__: user-parameters
 # Control parameter
-tau_ff     	: 0
-kp		: 0.5
-kd          	: 1
-zero		: 0
-calibrate	: 0
-
-# Tarket toe position
-pos_x		: 1
-pos_y		: 1
-pos_z		: 1 
+tau_ff          : 0.0
+kp              : 0.5
+kd              : 1
+zero            : 0
+calibrate       : 0
 
 # Leg config parameter
-h		: 1
-hu		: 1
-hl		; 1
+h               : 0.08
+hu              : 0.17
+hl              : 0.17
 
-
+# D-trajectory config parameter
+lamda           : 0.5
+time            : 1000
+x_start         : 0
+x_end           : 0.2
+z_height        : 0.1
+z_start         : -0.25

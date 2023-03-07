@@ -343,7 +343,7 @@ void spi_send_receive(spi_command_t *command, spi_data_t *data) {
                    &spi_message);
     (void)rv;
 
-    if (rv < 0) printf("[ERROR] SPI %d COMMUNICATION FAILED(%d).\n", spi_board,rv);
+    //if (rv < 0) printf("[ERROR] SPI %d COMMUNICATION FAILED(%d).\n", spi_board,rv);
 
 
 
