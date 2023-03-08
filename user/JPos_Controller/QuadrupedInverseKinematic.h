@@ -40,6 +40,7 @@ class QuadrupedInverseKinematic
         double lyz;//Length from top-pitch-joint to P on Y-Z
         double lxz;//Length from Qxz' to Pxz'
         double n;
+
 };
 
 #endif

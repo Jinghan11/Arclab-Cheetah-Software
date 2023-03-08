@@ -25,7 +25,17 @@ class JPos_Controller:public RobotController{
     virtual ControlParameters* getUserControlParameters() {
       return &userParameters;
     }
-
+  private:
+        vector<double> x; // 存储 x 坐标
+        vector<double> z; // 存储 z 坐标
+        double x_t = 0;
+        double z_t = 0;
+        double x_last = 0;
+        double z_last = 0;
+        double dt = 1;  //  t - t_last
+        double gamma = 0;
+        double beta = 0;
+        double alpha = 0;
   protected:
     DVec<float> _jpos_ini;
   JPosUserParameters userParameters;

@@ -27,6 +27,7 @@ void JPos_Controller::runController(){
 
   _legController->_maxTorque = 2;
   _legController->_legsEnabled = true;
+  _legController->_zeroEncoders = false;
 
   #ifdef JPOS_JointTest
   //Every joint is controled by sin function
@@ -64,27 +65,14 @@ void JPos_Controller::runController(){
 
 #ifdef JPOS_Tracking
     QuadrupedInverseKinematic *p=new QuadrupedInverseKinematic;
-    vector<double> x; // 存储 x 坐标
-    vector<double> z; // 存储 z 坐标
-    double x_t = 0;
-    double z_t = 0;
-    double x_last = 0;
-    double z_last = 0;
-    double t_last = 0;
-    double gamma = 0;
-    double beta = 0;
-    double alpha = 0;
 
     p->set_leg_length(userParameters.h, userParameters.hu, userParameters.hl);
-
-    for (double t = 0; t <= userParameters.time; t += 0.01)
-    {
-        if (t >= 0 && t <= userParameters.lamda * userParameters.time)
+        if (iter >= 0 && iter <= userParameters.lamda * userParameters.time)
         {
-            double sigma = 2 * M_PI * t / (userParameters.lamda * userParameters.time);
+            double sigma = 2 * M_PI * iter / (userParameters.lamda * userParameters.time);
             x_t = (userParameters.x_end - userParameters.x_start) * ((sigma - sin(sigma)) / (2 * M_PI)) + userParameters.x_start;
             z_t = userParameters.z_height * (1 - cos(sigma)) / 2 + userParameters.z_start;
-            p->set_toe_position(x_t,-0.08,z_t);
+            p->set_toe_position(x_t,0,z_t);
             p->calc_dyz();
             p->calc_lyz();
             p->calc_L_gamma();
@@ -103,15 +91,13 @@ void JPos_Controller::runController(){
             }
               _legController->commands[leg].kpJoint = kpMat;
               _legController->commands[leg].kdJoint = kdMat;
-            }
-            //printf("[Jpos] beta is %f\n", beta);     
-            //printf("[Jpos] alpha is %f\n", alpha);       
+            }    
         }
-        else if (t > userParameters.lamda * userParameters.time && t < userParameters.time)
+        else if (iter > userParameters.lamda * userParameters.time && iter < userParameters.time)
         {
-            x_t = x_last - (x_last - userParameters.x_start) / ((userParameters.time - t) / (t - t_last));
+            x_t = x_last - (x_last - userParameters.x_start) / ((userParameters.time - iter) / dt);
             z_t = z_last;
-            p->set_toe_position(x_t,-0.08,z_t);
+            p->set_toe_position(x_t,0,z_t);
             p->calc_dyz();
             p->calc_lyz();
             p->calc_L_gamma();
@@ -127,24 +113,38 @@ void JPos_Controller::runController(){
                 _legController->commands[leg].qDes[2] = alpha;
                 _legController->commands[leg].qdDes[jidx] = 0.;
                 _legController->commands[leg].tauFeedForward[jidx] = userParameters.tau_ff;
+              }
+              _legController->commands[leg].kpJoint = kpMat;
+              _legController->commands[leg].kdJoint = kdMat;
+
+            }
+        }else{
+            for(int leg(0); leg<4; ++leg){
+              for(int jidx(0); jidx<3; ++jidx){
+                _legController->commands[leg].qDes[0] = gamma;
+                _legController->commands[leg].qDes[1] = beta;
+                _legController->commands[leg].qDes[2] = alpha;
+                _legController->commands[leg].qdDes[jidx] = 0.;
+                _legController->commands[leg].tauFeedForward[jidx] = userParameters.tau_ff;
             }
               _legController->commands[leg].kpJoint = kpMat;
               _legController->commands[leg].kdJoint = kdMat;
-            }   
-            //printf("[Jpos] beta is %f\n", beta);     
-            //printf("[Jpos] alpha is %f\n", alpha);        
+            }
         }
         x_last = x_t;
         z_last = z_t;
-        t_last = t;
-    }
+        //printf("[Jpos] beta is %f\n", beta);     
+        //printf("[Jpos] alpha is %f\n", alpha);   
+    
+    //delete p;
+    //p = nullptr;
+    //system("pause");
+    /*
     for(int leg(0); leg<4; ++leg){
         _legController->commands[leg].qDes[0] = gamma;
         _legController->commands[leg].qDes[1] = beta;
         _legController->commands[leg].qDes[2] = alpha;
     }
-    delete p;
-    p = nullptr;
-    //system("pause");
+    */
 #endif
 }
