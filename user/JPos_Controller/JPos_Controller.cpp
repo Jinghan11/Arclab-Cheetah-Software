@@ -136,8 +136,8 @@ void JPos_Controller::runController(){
         //printf("[Jpos] beta is %f\n", beta);     
         //printf("[Jpos] alpha is %f\n", alpha);   
     
-    //delete p;
-    //p = nullptr;
+    delete p;
+    p = nullptr;
     //system("pause");
     /*
     for(int leg(0); leg<4; ++leg){
