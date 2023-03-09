@@ -27,4 +27,10 @@ set(CMAKE_C_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES} -lrt -ldl -lpthrea
 ```
 
 3. in /scripts, run `./make_types.sh`, if there are some warnings and errors, don't worry
-4. run `cp third-party/N100IMU/IMU_LCMt.lcm lcm-types/cpp/`
+4. run `cp third-party/N100IMU/LCM/N100IMU_lcm.hpp lcm-types/cpp/`
+5. To build code which can run on the mini cheetah. After your first make, you can use cmake .. in subsitute, the config will keep in the future.
+```
+mkdir mc-build && cd mc-build
+cmake -DMINI_CHEETAH_BUILD=TRUE ..
+make -j8
+```
