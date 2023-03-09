@@ -1,0 +1,18 @@
+package LCM;
+
+
+struct N100IMU_lcm
+{
+        float      quat[4];
+
+        float      rpy[3];
+
+        float      omega[3];
+
+        float      acc[3];
+
+        int64_t    good_packets;
+
+        int64_t    bad_packets;
+
+}
